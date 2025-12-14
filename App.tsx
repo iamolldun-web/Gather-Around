@@ -4,14 +4,17 @@ import Library from './components/Library';
 import BookReader from './components/BookReader';
 import LandingPage from './components/LandingPage';
 import Onboarding from './components/Onboarding';
-import BadgeNotification from './components/BadgeNotification';
-import { Story, AppState, Badge } from './types';
+import TreasureNotification from './components/TreasureNotification';
+import { Story, AppState, Badge, Treasure, CollectedCharacter, StoryRewards } from './types';
 import { getUserProgress, completeStory } from './services/gamificationService';
 
 function App() {
   const [view, setView] = useState<AppState>(AppState.LANDING);
   const [selectedStory, setSelectedStory] = useState<Story | null>(null);
-  const [newBadge, setNewBadge] = useState<Badge | null>(null);
+  const [selectedStoryStartPage, setSelectedStoryStartPage] = useState<number | undefined>(undefined);
+  
+  // Reward State
+  const [rewards, setRewards] = useState<StoryRewards | null>(null);
 
   useEffect(() => {
     // Check if user exists to determine initial flow
@@ -35,34 +38,43 @@ function App() {
     setView(AppState.LIBRARY);
   };
 
-  const handleSelectStory = (story: Story) => {
+  const handleSelectStory = (story: Story, initialPage?: number) => {
     setSelectedStory(story);
+    setSelectedStoryStartPage(initialPage);
     setView(AppState.READING);
   };
 
   const handleBackToLibrary = () => {
     setSelectedStory(null);
+    setSelectedStoryStartPage(undefined);
     setView(AppState.LIBRARY);
   };
 
-  const handleStoryComplete = () => {
+  const handleStoryComplete = async () => {
     if (selectedStory) {
-      const earnedBadges = completeStory(selectedStory.title);
-      if (earnedBadges.length > 0) {
-        // Show the first new badge earned (simplify UI to show one at a time for now)
-        setNewBadge(earnedBadges[0]);
-      }
+      // Now async because we might generate a character image
+      const results = await completeStory(selectedStory);
+      setRewards(results);
     }
   };
 
+  const handleCloseRewards = () => {
+    setRewards(null);
+    // Optional: Auto navigate back to library or stay on completion screen? 
+    // Usually standard flow is Completion Screen -> User clicks Back -> Library. 
+    // But the notification pops up over the completion screen.
+  };
+
   return (
-    <div className="min-h-screen bg-ntalo-dark flex flex-col items-center">
+    <div className="min-h-screen flex flex-col items-center w-full">
       
-      {/* Badge Notification Overlay */}
-      {newBadge && (
-        <BadgeNotification 
-          badge={newBadge} 
-          onClose={() => setNewBadge(null)} 
+      {/* Treasure/Reward Notification Overlay */}
+      {rewards && (
+        <TreasureNotification 
+          badges={rewards.badges}
+          treasure={rewards.treasure}
+          character={rewards.character}
+          onClose={handleCloseRewards} 
         />
       )}
 
@@ -84,6 +96,7 @@ function App() {
             story={selectedStory} 
             onBack={handleBackToLibrary}
             onComplete={handleStoryComplete}
+            initialPage={selectedStoryStartPage}
           />
         )}
       </div>

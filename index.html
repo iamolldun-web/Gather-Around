@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gather Around - Global Tales</title>
+    <title>Gather Around - Folk Stories</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -11,49 +11,76 @@
           extend: {
             colors: {
               gather: {
-                red: '#AA4739',       // Clay Red - Primary Action / Headers
-                'red-light': '#C86B5E',
-                brown: '#5C3B27',     // Earth Brown - Deep Backgrounds
-                'brown-dark': '#3A2518', // Darker Earth - For deepest contrast
-                gold: '#D8A859',      // Warm Gold - Highlights / Accents
-                linen: '#F6EBDD',     // Linen - Paper / Light Text
-                'linen-dark': '#E8DCCB',
+                // BRIGHT & PLAYFUL PALETTE
+                
+                // Primary Accents
+                red: '#FF6B6B',       // Pastel Coral Red
+                'red-light': '#FF8787',
+                gold: '#FDCB6E',      // Macaroon Yellow
+                yellow: '#FFEAA7',    // Cream
+                
+                // Nature & Sky
+                green: '#00b894',     // Mint Leaf
+                'green-dark': '#00a885',
+                sky: '#74b9ff',       // Light Sky
+                blue: '#0984e3',      // Electron Blue
+                
+                // Magic & Mystery
+                purple: '#6c5ce7',    // Exodus Purple
+                violet: '#a29bfe',    // Shy Moment
+                pink: '#fd79a8',      // Pico Pink
+                
+                // Text & Surfaces
+                brown: '#2d3436',     // Dark Slate (Replaces Wood Brown for text)
+                'brown-dark': '#000000', 
+                
+                linen: '#FFFFFF',     // Pure White
+                'linen-dark': '#dfe6e9', // City Lights Grey
               }
             },
             fontFamily: {
               comic: ['Comic Neue', 'cursive'],
               serif: ['Merriweather', 'serif'],
+              bouncy: ['Fredoka', 'sans-serif'], // New header font
             },
             backgroundImage: {
               'paper-gradient': 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.05) 100%)',
-              'warm-gradient': 'linear-gradient(180deg, #AA4739 0%, #D8A859 100%)',
+              'sky-gradient': 'linear-gradient(to bottom, #74b9ff 0%, #a29bfe 100%)',
             },
             boxShadow: {
-              'layer-1': '0 4px 6px -1px rgba(92, 59, 39, 0.3), 0 2px 4px -1px rgba(92, 59, 39, 0.2)',
-              'layer-2': '0 10px 15px -3px rgba(58, 37, 24, 0.5), 0 4px 6px -2px rgba(58, 37, 24, 0.3)',
-              'layer-3': '0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4)',
-              'inner-glow': 'inset 0 2px 4px 0 rgba(255, 255, 255, 0.2)',
+              'layer-1': '0 4px 0px 0px rgba(0,0,0,0.1)',
+              'layer-2': '0 8px 0px 0px rgba(0,0,0,0.1)',
+              'pop': '0 8px 0px 0px rgba(0,0,0,0.15)', 
+              'inner-glow': 'inset 0 2px 4px 0 rgba(255, 255, 255, 0.4)',
             },
             animation: {
               'spin-slow': 'spin 12s linear infinite',
               'float': 'float 6s ease-in-out infinite',
               'float-delayed': 'float 7s ease-in-out infinite 1s',
-              'breathe': 'breathe 4s ease-in-out infinite',
+              'bounce-gentle': 'bounceGentle 3s infinite',
               'pop-in': 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
               'slide-in': 'slideIn 0.6s ease-out forwards',
               'fade-in': 'fadeIn 0.8s ease-out forwards',
               'book-flip-next': 'bookFlipNext 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
               'book-flip-prev': 'bookFlipPrev 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
               'fade-up': 'fadeUp 0.6s ease-out forwards',
-              'page-flip-btn': 'pageFlipBtn 1.5s ease-in-out infinite',
+              'wiggle': 'wiggle 1s ease-in-out infinite',
             },
             keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-15px)' },
+              },
+              bounceGentle: {
+                '0%, 100%': { transform: 'translateY(-5%)' },
+                '50%': { transform: 'translateY(0)' },
+              },
               popIn: {
-                '0%': { opacity: '0', transform: 'scale(0.9)' },
+                '0%': { opacity: '0', transform: 'scale(0.5)' },
                 '100%': { opacity: '1', transform: 'scale(1)' },
               },
               slideIn: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '0%': { opacity: '0', transform: 'translateY(50px)' },
                 '100%': { opacity: '1', transform: 'translateY(0)' },
               },
               fadeIn: {
@@ -72,9 +99,9 @@
                 '0%': { opacity: '0', transform: 'translateY(20px) scale(0.98)' },
                 '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
               },
-              pageFlipBtn: {
-                '0%, 100%': { transform: 'perspective(400px) rotateY(0deg)', transformOrigin: 'left center' },
-                '50%': { transform: 'perspective(400px) rotateY(-30deg)', transformOrigin: 'left center' },
+              wiggle: {
+                '0%, 100%': { transform: 'rotate(-3deg)' },
+                '50%': { transform: 'rotate(3deg)' },
               }
             }
           }
@@ -82,12 +109,17 @@
       }
     </script>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Fredoka:wght@400;600;700&display=swap');
       
       body {
         font-family: 'Comic Neue', cursive;
-        background-color: #5C3B27;
-        color: #F6EBDD;
+        /* Default background if components don't override */
+        background-color: #74b9ff; 
+        color: #2d3436;
+      }
+      
+      h1, h2, h3, button {
+        font-family: 'Fredoka', sans-serif;
       }
       
       .hide-scrollbar::-webkit-scrollbar {
@@ -100,14 +132,14 @@
 
       /* Connected Dots - Universal Pattern */
       .pattern-dots {
-        background-image: radial-gradient(#F6EBDD 1px, transparent 1px);
-        background-size: 20px 20px;
-        opacity: 0.1;
+        background-image: radial-gradient(#FFF 2px, transparent 2px);
+        background-size: 24px 24px;
+        opacity: 0.3;
       }
 
       /* Woven Basket Pattern */
       .pattern-weave {
-        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h10v10H0V0zm10 10h10v10H10V10z' fill='%23F6EBDD' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h10v10H0V0zm10 10h10v10H10V10z' fill='%23FFFFFF' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
       }
 
       /* Paper Texture Overlay */
@@ -119,31 +151,9 @@
         height: 100%;
         pointer-events: none;
         z-index: 50;
-        opacity: 0.15;
+        opacity: 0.1;
         background-image: url("https://www.transparenttextures.com/patterns/felt.png");
         mix-blend-mode: overlay;
-      }
-      
-      /* Cutout Edge Effect */
-      .cutout-edge {
-        mask-image: radial-gradient(circle, white 100%, black 100%);
-        -webkit-mask-image: radial-gradient(circle, white 100%, black 100%);
-        box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
-      }
-
-      /* Animations */
-      @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-      }
-      
-      @keyframes breathe {
-        0%, 100% { transform: scale(1); opacity: 0.8; }
-        50% { transform: scale(1.05); opacity: 1; }
-      }
-      
-      .perspective-scene {
-        perspective: 1000px;
       }
       
       .perspective-book {
@@ -158,12 +168,14 @@
     "react": "https://aistudiocdn.com/react@^19.2.0",
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "canvas-confetti": "https://aistudiocdn.com/canvas-confetti@^1.9.4"
+    "canvas-confetti": "https://aistudiocdn.com/canvas-confetti@^1.9.4",
+    "@stripe/stripe-js": "https://esm.sh/@stripe/stripe-js@2.1.0",
+    "@stripe/react-stripe-js": "https://esm.sh/@stripe/react-stripe-js@2.3.1?external=react,react-dom"
   }
 }
 </script>
 </head>
-  <body class="antialiased overflow-x-hidden selection:bg-gather-red selection:text-white">
+  <body class="antialiased overflow-x-hidden selection:bg-gather-pink selection:text-white">
     <div class="bg-paper-texture"></div>
     <div id="root"></div>
   </body>

@@ -3,8 +3,9 @@ import { OfflineStory } from '../types';
 
 const DB_NAME = 'NtaloDB';
 const STORE_NAME = 'stories';
-const IMAGE_STORE_NAME = 'images';
-const DB_VERSION = 2;
+// This acts as the specific folder for user-uploaded custom images in the browser's backend
+const IMAGE_STORE_NAME = 'custom_story_images_folder';
+const DB_VERSION = 3; // Incremented version to ensure folder creation
 
 let dbInstance: IDBDatabase | null = null;
 let connectionPending: Promise<IDBDatabase> | null = null;
@@ -174,4 +175,35 @@ export const getCachedImage = async (key: string): Promise<string | undefined> =
         }
     }
   });
+};
+
+// --- Custom Story Images (User Uploads) ---
+// These are mapped by Story Title + Page Index to create a "virtual folder" structure
+
+const getCustomImageKey = (storyTitle: string, pageIndex: number) => `custom_story_img_${storyTitle}_${pageIndex}`;
+
+export const saveCustomStoryImage = async (storyTitle: string, pageIndex: number, base64Data: string): Promise<void> => {
+  const key = getCustomImageKey(storyTitle, pageIndex);
+  return cacheImage(key, base64Data);
+};
+
+export const getCustomStoryImage = async (storyTitle: string, pageIndex: number): Promise<string | undefined> => {
+  const key = getCustomImageKey(storyTitle, pageIndex);
+  return getCachedImage(key);
+};
+
+export const deleteCustomStoryImage = async (storyTitle: string, pageIndex: number): Promise<void> => {
+    const db = await initDB();
+    const key = getCustomImageKey(storyTitle, pageIndex);
+    return new Promise((resolve, reject) => {
+        try {
+            const transaction = db.transaction(IMAGE_STORE_NAME, 'readwrite');
+            const store = transaction.objectStore(IMAGE_STORE_NAME);
+            const request = store.delete(key);
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+        } catch(e) {
+             reject(e);
+        }
+    });
 };
